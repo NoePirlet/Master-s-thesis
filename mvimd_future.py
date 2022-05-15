@@ -25,44 +25,53 @@ sec_month = 2592000
 
 access_pr_file = 'intuaw_Emon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc'
 dset = nc.Dataset(access_pr_file)
-lat_histo=np.array(dset['lat'][0:25])
+lat_histo=np.array(dset['lat'][0:26])
 lon_all_histo=np.array(dset['lon'][:])
+"""
 lon_all_histo=np.append(lon_all_histo, 360)
-
-umvimd_all_histo = np.array(dset['intuaw'][1548:1980,0:25,:])*sec_month 
-umvimd_all_histo_v2 = np.zeros((432,25,193))
+"""
+umvimd_all_histo_v2 = np.array(dset['intuaw'][1548:1980,0:26,:])*sec_month
+""" 
+umvimd_all_histo_v2 = np.zeros((432,26,193))
 for i in range(432):
     for j in range(25):
             umvimd_all_histo_v2[i,j] = np.append(umvimd_all_histo[i,j],(umvimd_all_histo[i,j,0]+umvimd_all_histo[i,j,-1])/2)
+"""            
 dset.close()                                                                  
 
 access_pr_file = 'intvaw_Emon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc'
 dset = nc.Dataset(access_pr_file)
-vmvimd_all_histo = np.array(dset['intvaw'][1548:1980,0:25,:])*sec_month 
-vmvimd_all_histo_v2 = np.zeros((432,25,193))
+vmvimd_all_histo_v2 = np.array(dset['intvaw'][1548:1980,0:26,:])*sec_month
+""" 
+vmvimd_all_histo_v2 = np.zeros((432,26,193))
 for i in range(432):
-    for j in range(25):
+    for j in range(26):
             vmvimd_all_histo_v2[i,j] = np.append(vmvimd_all_histo[i,j],(vmvimd_all_histo[i,j,0]+vmvimd_all_histo[i,j,-1])/2)
+"""            
 dset.close()
 
 
 
 access_pr_file = 'intuaw_Emon_ACCESS-ESM1-5_ssp585_r1i1p1f1_gn_201501-210012.nc'
 dset = nc.Dataset(access_pr_file)
-umvimd_all_ssp = np.array(dset['intuaw'][600:1032,0:25,:])*sec_month 
-umvimd_all_ssp_v2 = np.zeros((432,25,193))
+umvimd_all_ssp_v2 = np.array(dset['intuaw'][600:1032,0:26,:])*sec_month
+""" 
+umvimd_all_ssp_v2 = np.zeros((432,26,193))
 for i in range(432):
-    for j in range(25):
+    for j in range(26):
             umvimd_all_ssp_v2[i,j] = np.append(umvimd_all_ssp[i,j],(umvimd_all_ssp[i,j,0]+umvimd_all_ssp[i,j,-1])/2)
+"""        
 dset.close()                                                                  
 
 access_pr_file = 'intvaw_Emon_ACCESS-ESM1-5_ssp585_r1i1p1f1_gn_201501-210012.nc'
 dset = nc.Dataset(access_pr_file)
-vmvimd_all_ssp = np.array(dset['intvaw'][600:1032,0:25,:])*sec_month 
-vmvimd_all_ssp_v2 = np.zeros((432,25,193))
+vmvimd_all_ssp_v2 = np.array(dset['intvaw'][600:1032,0:26,:])*sec_month 
+"""
+vmvimd_all_ssp_v2 = np.zeros((432,26,193))
 for i in range(432):
-    for j in range(25):
+    for j in range(26):
             vmvimd_all_ssp_v2[i,j] = np.append(vmvimd_all_ssp[i,j],(vmvimd_all_ssp[i,j,0]+vmvimd_all_ssp[i,j,-1])/2)
+"""            
 dset.close()
 
 """
@@ -92,18 +101,51 @@ dset.close()
 #def dx et dy ===============================================================================
 
 
-mvimd = np.zeros((432,25,193))
-mvimd_ssp = np.zeros((432,25,193)) 
+mvimd_v0 = np.zeros((432,25,192))
+mvimd_ssp_v0 = np.zeros((432,25,192)) 
 
 from numpy import meshgrid, deg2rad, gradient, cos
 R = 6371000   
+"""
 for i in range(len(lat_histo)):
     for j in range(len(lon_all_histo)):
         for k in range(432):  
-                mvimd[k,i,j] = (96/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))*(umvimd_all_histo_v2[k,i,(j+1)%193]-umvimd_all_histo_v2[k,i,j]) + (144/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))*(vmvimd_all_histo_v2[k,(i-1),j]*np.cos(deg2rad(lat_histo[i-1]))-vmvimd_all_histo_v2[k,i,j]*np.cos(deg2rad(lat_histo[i])))
-                mvimd_ssp[k,i,j] = (96/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))*(umvimd_all_ssp_v2[k,i,(j+1)%193]-umvimd_all_ssp_v2[k,i,j]) + (144/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))*(vmvimd_all_ssp_v2[k,(i-1),j]*np.cos(deg2rad(lat_histo[i-1]))-vmvimd_all_ssp_v2[k,i,j]*np.cos(deg2rad(lat_histo[i])))
+                mvimd[k,i,j] = (96/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))*(umvimd_all_histo_v2[k,i,(j+1)%193]-umvimd_all_histo_v2[k,i,j])\
+                    + (144/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))\
+                    *(vmvimd_all_histo_v2[k,(i-1),j]*np.cos(deg2rad(lat_histo[i-1]))-vmvimd_all_histo_v2[k,i,j]*np.cos(deg2rad(lat_histo[i])))
+                        
+                mvimd_ssp[k,i,j] = (96/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))*(umvimd_all_ssp_v2[k,i,(j+1)%193]-umvimd_all_ssp_v2[k,i,j])\
+                    + (144/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))\
+                    *(vmvimd_all_ssp_v2[k,(i-1),j]*np.cos(deg2rad(lat_histo[i-1]))-vmvimd_all_ssp_v2[k,i,j]*np.cos(deg2rad(lat_histo[i])))
+"""
+
+for i in range(len(lat_histo)-1):
+    for j in range(len(lon_all_histo)):
+        for k in range(432):  
+                mvimd_v0[k,i,j] = (96/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))*(umvimd_all_histo_v2[k,i,(j+1)%192]-umvimd_all_histo_v2[k,i,j])\
+                    + (144/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))\
+                    *(vmvimd_all_histo_v2[k,(i+1),j]*np.cos(deg2rad(lat_histo[i+1]))-vmvimd_all_histo_v2[k,i,j]*np.cos(deg2rad(lat_histo[i])))
+                        
+                mvimd_ssp_v0[k,i,j] = (96/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))*(umvimd_all_ssp_v2[k,i,(j+1)%192]-umvimd_all_ssp_v2[k,i,j])\
+                    + (144/(np.pi*R*np.cos(deg2rad(lat_histo[i]))))\
+                    *(vmvimd_all_ssp_v2[k,(i+1),j]*np.cos(deg2rad(lat_histo[i+1]))-vmvimd_all_ssp_v2[k,i,j]*np.cos(deg2rad(lat_histo[i])))
 
 
+lon_all_histo=np.append(lon_all_histo, 360)
+
+mvimd = np.zeros((432,25,193))
+for i in range(432):
+    for j in range(25):    
+            mvimd[i,j] = np.append(mvimd_v0[i,j],(mvimd_v0[i,j,0]+mvimd_v0[i,j,-1])/2)
+
+mvimd_ssp = np.zeros((432,25,193))
+for i in range(432):
+    for j in range(25):
+            mvimd_ssp[i,j] = np.append(mvimd_ssp_v0[i,j],(mvimd_ssp_v0[i,j,0]+mvimd_ssp_v0[i,j,-1])/2)
+
+for i in range(432):
+        mvimd[i,0,:] = 0
+        mvimd_ssp[i,0,:] = 0
 
 """
 mvimd_era = np.zeros((432,121,1440))
@@ -367,14 +409,14 @@ def plot_map(lon,lat, lb, ub, step, units ,args, name, which, arrow, my_color, s
 
 #plot_map(lon_future,lat_future, 0, 55, 5 ,'$\mathregular{mm/month}$', mean_mer_by_season_future , "Evaporation (1979-2014) historical Austral", "double", "both" , "Reds", sic_ = mean_sic_by_season_future)   
 #plot_map(lon_future,lat_future, 0, 110, 10 ,'$\mathregular{mm/month}$', mean_mtpr_by_season_future, "Precipitation (1979-2014) historical Autral", "simple", "max" , "Blues")   
-plot_map(lon_all_histo ,lat_histo , -40, 170, 20 ,'$\mathregular{mm/month}$', mean_mvimd_by_season_future , "Moisture convergence (1979-2014) historical Austral", "double", "both" , "BrBG")   
-plot_map(lon_all_histo ,lat_histo , -40, 170, 20 ,'$\mathregular{mm/month}$', mean_mvimd_by_season_future_ssp , "Moisture convergence (1979-2014) ssp585 Austral", "double", "both" , "BrBG")   
+plot_map(lon_all_histo ,lat_histo[0:25] , -20, 100, 10 ,'$\mathregular{mm/month}$', (-1)*mean_mvimd_by_season_future , "Moisture convergence (1979-2014) historical Austral", "double", "both" , "BrBG")   
+plot_map(lon_all_histo ,lat_histo[0:25] , -20, 100, 10 ,'$\mathregular{mm/month}$', (-1)*mean_mvimd_by_season_future_ssp , "Moisture convergence (1979-2014) ssp585 Austral", "double", "both" , "BrBG")   
 
 
 #plot_map(lon_era ,lat_era , -20, 100, 10 ,'$\mathregular{mm/month}$', mean_mvimd_era_by_season_future*(-1) , "Moisture convergence (1979-2014) historical Austral", "double", "both" , "BrBG")   
 
 
 
-#np.save("mvimd_ACCESS_histo", mvimd)
-#np.save("mvimd_ACCESS_ssp", mvimd_ssp)
+#np.save("mvimd_ACCESS_histo_corrected", mvimd)
+#np.save("mvimd_ACCESS_ssp_corrected", mvimd_ssp)
 

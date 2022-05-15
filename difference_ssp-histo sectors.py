@@ -97,7 +97,7 @@ mer_ABS = np.array(mer_all[:,:,122:160])
 dset.close()
 
 
-mvimd_all_histo = np.load("mvimd_ACCESS_histo.npy")
+mvimd_all_histo = (-1)*np.load("mvimd_ACCESS_histo_corrected.npy")
 for i in range(432):
     for j in range(193):
         mvimd_all_histo[i,0,j] = mvimd_all_histo[i,1,j]
@@ -107,7 +107,7 @@ mvimd_PO_histo = np.array(mvimd_all_histo[:,:,46:84])
 mvimd_RS_histo = np.array(mvimd_all_histo[:,:,84:122])
 mvimd_ABS_histo = np.array(mvimd_all_histo[:,:,122:160])
 
-mvimd_all_ssp = np.load("mvimd_ACCESS_ssp.npy")
+mvimd_all_ssp = (-1)*np.load("mvimd_ACCESS_ssp_corrected.npy")
 for i in range(432):
     for j in range(193):
         mvimd_all_ssp[i,0,j] = mvimd_all_ssp[i,1,j]

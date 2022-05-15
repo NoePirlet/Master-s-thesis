@@ -84,12 +84,12 @@ dset.close()
 
 """
 
-mvimd_histo = np.load("mvimd_ACCESS_histo.npy")
+mvimd_histo = (-1)*np.load("mvimd_ACCESS_histo_corrected.npy")
 for i in range(432):
     for j in range(193):
         mvimd_histo[i,0,j] = mvimd_histo[i,1,j]
 
-mvimd_ssp = np.load("mvimd_ACCESS_ssp.npy")
+mvimd_ssp = (-1)*np.load("mvimd_ACCESS_ssp_corrected.npy")
 for i in range(432):
     for j in range(193):
         mvimd_ssp[i,0,j] = mvimd_ssp[i,1,j]

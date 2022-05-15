@@ -68,7 +68,7 @@ mer_ABS_histo = np.array(mer_all_histo_v2[:,:,122:160])
 dset.close()
 
 
-mvimd_histo_v0 = np.load("mvimd_ACCESS.npy")
+mvimd_histo_v0 = (-1)*np.load("mvimd_ACCESS_histo_corrected.npy")
 mvimd_histo = np.array(mvimd_histo_v0[:,1:25,:])
 """
 for i in range(432):
@@ -391,7 +391,7 @@ def repartion_by_months (array,start_month,end_month,unite):
         
     return ([jan,feb,mar,apr,may,jun,jul,aug,sep,octb,nov,dec], std) 
 
-"""
+
 mer_sort_month_histo = np.zeros((6, 12))
 mtpr_sort_month_histo = np.zeros((6, 12))
 mvimd_sort_month_histo = np.zeros((6, 12))
@@ -400,7 +400,7 @@ mer_std_histo = np.zeros((6,12))
 mtpr_std_histo = np.zeros((6,12))
 mvimd_std_histo = np.zeros((6,12))
 PE_std_histo = np.zeros((6,12))
-"""
+
 mer_sort_month = np.zeros((6, 12))
 mtpr_sort_month = np.zeros((6, 12))
 mvimd_sort_month = np.zeros((6, 12))
@@ -412,11 +412,12 @@ PE_std = np.zeros((6,12))
 
 for i in range(len(mer_histo)):
     """
-    mer_sort_month_histo[i], mer_std_histo[i] = repartion_by_months(mer_histo[i],0,432,1) 
-    mtpr_sort_month_histo[i], mtpr_std_histo[i] = repartion_by_months(mtpr_histo[i],0,432,1)
-    #mvimd_sort_month_histo[i], mvimd_std_histo[i] = repartion_by_months(mvimd_histo[i],0,432,1)
-    PE_sort_month_histo[i] = (np.abs(mtpr_sort_month_histo[i]) - np.abs(mer_sort_month_histo[i]))
-    PE_std_histo[i] = np.sqrt((mtpr_std_histo[i])**2 + (mer_std_histo[i])**2)  #pas sur que ca soit bon ca devrait etre la somme ou autre chose 
+    mer_sort_month[i], mer_std_histo[i] = repartion_by_months(mer_histo[i],0,432,1) 
+    mtpr_sort_month[i], mtpr_std_histo[i] = repartion_by_months(mtpr_histo[i],0,432,1)
+    mvimd_sort_month[i], mvimd_std_histo[i] = repartion_by_months(mvimd_histo[i],0,432,1)
+    PE_sort_month[i] = (np.abs(mtpr_sort_month_histo[i]) - np.abs(mer_sort_month_histo[i]))
+    #PE_std_histo[i] = np.sqrt((mtpr_std_histo[i])**2 + (mer_std_histo[i])**2)  #pas sur que ca soit bon ca devrait etre la somme ou autre chose 
+    
     """
     mer_sort_month[i], mer_std[i] = repartion_by_months(mer_diff[i],0,432,1) 
     mtpr_sort_month[i], mtpr_std[i] = repartion_by_months(mtpr_diff[i],0,432,1)
